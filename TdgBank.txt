@@ -1,0 +1,76 @@
+titulo = '\n{:*^100}'.format(' TDG BANK ')
+menu = """
+   [1] Depósito 
+   [2] Saque 
+   [3] Extrato 
+   [4] Sair
+"""
+saldo = 0
+LIMITE_SAQUE = 500
+limite_diario = LIMITE_SAQUE
+saques_diario = 3
+extrato = []
+
+while True:
+    print(titulo, menu, '{:*^100}'.format(''))
+    opcao = input('  >> Informe a opção desejada: ')
+    
+    if opcao == '1':
+        
+        print('\n{:*^50}'.format(' DEPÓSITO '))
+        while True:
+            try:
+                valor = float(input('  >> Informe o  valor a ser depositado: '))
+                if valor >= 0:
+                    saldo += valor
+                    extrato.append(('Depósito: ', valor))
+                    print(f'  >> Valor depositado de R$ {valor:.2f}')
+                    break
+                else:
+                    print('  >> Oops!  Valor Inválido!!  Depósito somente em valores positivos. Tente Novamente...')
+                    
+            except ValueError:
+                print('  >> Oops!  Valor Inválido!!  Depósito somente em valores inteiros. Tente Novamente...')
+
+    elif opcao  == '2':
+        
+        print('\n{:*^50}'.format(' SAQUE '))
+        if saques_diario == 0:
+            print('  >> Oops!  Limite de 03 saques diários excedido!!')
+        
+        else:
+        
+            while True:
+                try:
+                    valor = float(input('  >> Informe o  valor a ser sacado: ').replace('-',''))
+                    
+                    if valor > limite_diario:
+                        print(f'  >> Oops!  Limite diário de R$ {LIMITE_SAQUE:.2f} para saques excedido!!')                        
+                        break
+                    
+                    elif valor <= saldo:
+                        saldo -= valor
+                        extrato.append(('Saque: ', valor * -1))
+                        saques_diario -= 1
+                        limite_diario -= valor
+                        print(f'  >> Valor sacado de R$ {valor:.2f}')                        
+                        break
+                    else:
+                        print('  >> Oops!  Saldo insuficiente!!  Tente Novamente...')
+
+                except ValueError:
+                    print('  >> Oops!  Valor Inválido!!  Tente Novamente...')
+
+    elif opcao == '3':
+        print('\n{:*^50}'.format(' EXTRATO '),)
+        for tipo, valor in extrato:
+            print(f'  >> {tipo.upper():>10} R$ {valor:.2f}')
+        print('\n{:*^50}'.format(''),)
+        print(f'\n  >> SALDO ATUAL R$ {saldo:.2f}')
+        
+    elif opcao == '4':
+        print('\n  >> !!! Obrigado por ser um cliente TDG BANK !!!')
+        break
+        
+    else:
+        print('Opção inválida!!')
